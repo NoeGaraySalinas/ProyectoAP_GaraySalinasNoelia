@@ -29,21 +29,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class MainSecurity extends WebSecurityConfigurerAdapter {
-
+public class MainSecurity extends WebSecurityConfigurerAdapter{
     @Autowired
     UserDetailsImpl userDetailsServicesImpl;
-
+    
     @Autowired
     JwtEntryPoint jwtEntryPoint;
-
+    
     @Bean
-    public JwtTokenFilter jwtTokenFilter() {
+    public JwtTokenFilter jwtTokenFilter(){
         return new JwtTokenFilter();
     }
-
+    
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
@@ -57,24 +56,25 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);           
     }
 
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
-
+    
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServicesImpl).passwordEncoder(passwordEncoder());
+       auth.userDetailsService(userDetailsServicesImpl).passwordEncoder(passwordEncoder());
     }
+    
+    
+    
 }
-
-

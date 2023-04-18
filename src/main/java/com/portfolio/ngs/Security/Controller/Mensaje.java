@@ -6,27 +6,24 @@ package com.portfolio.ngs.Security.Controller;
 
 
 public class Mensaje {
-    private String Mensaje;
+    private String mensaje;
     
-    
-    //constructor
+    //Constructor
 
     public Mensaje() {
     }
 
-    public Mensaje(String Mensaje) {
-        this.Mensaje = Mensaje;
+    public Mensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
-    
-    
-    //getter y setter
+    //Getter y Setter
 
     public String getMensaje() {
-        return Mensaje;
+        return mensaje;
     }
 
-    public void setMensaje(String Mensaje) {
-        this.Mensaje = Mensaje;
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
     
 }

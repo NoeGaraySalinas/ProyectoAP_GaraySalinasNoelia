@@ -6,8 +6,8 @@ package com.portfolio.ngs.Controller;
 
 import com.portfolio.ngs.Entity.Educacion;
 import com.portfolio.ngs.Security.Controller.Mensaje;
-import com.portfolio.ngs.Security.Dto.dtoEducacion;
-import com.portfolio.ngs.Security.Service.Seducacion;
+import com.portfolio.ngs.Dto.dtoEducacion;
+import com.portfolio.ngs.Service.Seducacion;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/educacion")
-@CrossOrigin(origins = {"https://ngsfrontend.web.app","http://localhost:4200"})
+@CrossOrigin(origins = {"https://portfoliowebap.web.app" , "http://localhost:4200"})
 public class CEducacion {
     @Autowired
     Seducacion sEducacion;

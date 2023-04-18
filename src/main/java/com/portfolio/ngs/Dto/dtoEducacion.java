@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.portfolio.ngs.Security.Dto;
+package com.portfolio.ngs.Dto;
 
 import javax.validation.constraints.NotBlank;
 
@@ -39,6 +39,4 @@ public class dtoEducacion {
     public void setDescripcionE(String descripcionE) {
         this.descripcionE = descripcionE;
     }
-    
-    
 }

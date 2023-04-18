@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
  * @author Noelia
  */
 public class dtoHys {
-    @NotBlank
+     @NotBlank
     private String nombre;
     @NotBlank
     private int porcentaje;
@@ -39,6 +39,4 @@ public class dtoHys {
     public void setPorcentaje(int porcentaje) {
         this.porcentaje = porcentaje;
     }
-    
-    
 }

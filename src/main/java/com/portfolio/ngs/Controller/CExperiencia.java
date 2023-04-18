@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/explab")
-@CrossOrigin(origins = {"https://ngsfrontend.web.app","http://localhost:4200"})
+@CrossOrigin(origins = {"https://portfoliowebap.web.app" , "http://localhost:4200"})
 public class CExperiencia {
     @Autowired
     SExperiencia sExperiencia;
     
     @GetMapping("/lista")
     public ResponseEntity<List<Experiencia>> list(){
-        List<Experiencia> list = sExperiencia.List();
+        List<Experiencia> list = sExperiencia.list();
         return new ResponseEntity(list, HttpStatus.OK);
     }
     
@@ -44,6 +44,16 @@ public class CExperiencia {
         Experiencia experiencia = sExperiencia.getOne(id).get();
         return new ResponseEntity(experiencia, HttpStatus.OK);
     }
+    
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") int id) {
+        if (!sExperiencia.existsById(id)) {
+            return new ResponseEntity(new Mensaje("no existe"), HttpStatus.NOT_FOUND);
+        }
+        sExperiencia.delete(id);
+        return new ResponseEntity(new Mensaje("producto eliminado"), HttpStatus.OK);
+    }
+
     
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody dtoExperiencia dtoexp){      
@@ -78,13 +88,4 @@ public class CExperiencia {
         return new ResponseEntity(new Mensaje("Experiencia actualizada"), HttpStatus.OK);
              
     }
-    public ResponseEntity<?>delete(@PathVariable("id") int id) {
-        //Validamos si existe el id
-       if(!sExperiencia.existsById(id))
-            return new ResponseEntity(new Mensaje("El ID no existe"), HttpStatus.BAD_REQUEST);
-       
-       sExperiencia.delete(id);
-       
-       return new ResponseEntity(new Mensaje("Experiencia eliminada"),HttpStatus.OK);
-    } 
 }
