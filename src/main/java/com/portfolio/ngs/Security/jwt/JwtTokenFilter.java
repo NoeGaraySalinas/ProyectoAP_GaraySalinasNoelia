@@ -36,6 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try {
             logger.info("Estoy en el filtro 1");
             String token = getToken(request);
+            logger.info(token);
             if (token != null && jwtProvider.validateToken(token)) {
                 logger.info("Estoy en el filtro 2");
                 String nombreUsuario = jwtProvider.getNombreUSuarioFromToken(token);
@@ -54,9 +55,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
     
     private String getToken(HttpServletRequest request){
+        logger.info("Get token");
         String header = request.getHeader("Authorization");
         if(header != null && header.startsWith("Bearer"))
             return header.replace("Bearer", "");
+        logger.info("Get token is null");
         return null;
     }
 }
