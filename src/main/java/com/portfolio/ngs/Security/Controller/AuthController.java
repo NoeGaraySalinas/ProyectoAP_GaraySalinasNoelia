@@ -89,14 +89,12 @@ public class AuthController {
         logger.info("Estoy en el login 2");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         logger.info("Estoy en el login 3");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        logger.info("Estoy en el login 4");
         String jwt = jwtProvider.generateToken(authentication);
-        logger.info("Estoy en el login 5");
+        logger.info("Estoy en el login 4");
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         
         JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-        logger.info("Estoy en el login 6");
+        logger.info("Estoy en el login 5");
         return new ResponseEntity(jwtDto, HttpStatus.OK);
     }
     
