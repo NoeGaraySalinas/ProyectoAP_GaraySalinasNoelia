@@ -82,18 +82,21 @@ public class AuthController {
         logger.info("Estoy en el login 1");
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal puestos"), HttpStatus.BAD_REQUEST);
-        
+        logger.info("USUARIO: " + loginUsuario.getNombreUsuario());
+        logger.info("PASS: " + loginUsuario.getPassword());
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
         loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
-        
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         logger.info("Estoy en el login 2");
-        String jwt = jwtProvider.generateToken(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         logger.info("Estoy en el login 3");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        logger.info("Estoy en el login 4");
+        String jwt = jwtProvider.generateToken(authentication);
+        logger.info("Estoy en el login 5");
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         
         JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-        logger.info("Estoy en el login 4");
+        logger.info("Estoy en el login 6");
         return new ResponseEntity(jwtDto, HttpStatus.OK);
     }
     

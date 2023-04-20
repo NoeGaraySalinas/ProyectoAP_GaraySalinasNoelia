@@ -41,6 +41,8 @@ public class JwtProvider {
     }
     
     public boolean validateToken(String token){
+        logger.info("TOKEN: " + token);
+
         try{
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
@@ -55,6 +57,7 @@ public class JwtProvider {
         }catch (SignatureException e){
             logger.error("Firma no válida");
         }
+        logger.error("error validando token");
         return false;
     }
 }
