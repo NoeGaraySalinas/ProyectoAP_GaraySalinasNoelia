@@ -20,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  *
- * @author Noelia
+ * @author Usuario
  */
 public class JwtTokenFilter extends OncePerRequestFilter {
 
@@ -34,17 +34,22 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
+            logger.info("Estoy en el filtro 1");
             String token = getToken(request);
             if (token != null && jwtProvider.validateToken(token)) {
+                logger.info("Estoy en el filtro 2");
                 String nombreUsuario = jwtProvider.getNombreUSuarioFromToken(token);
                 UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(nombreUsuario);
+                logger.info("Estoy en el filtro 3");
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                logger.info("Estoy en el filtro 4");
             }
         } catch (Exception e) {
             logger.error("Fallí el metodo doFilterInternal");
         }
+        logger.info("Estoy en el filtro 5");
         filterChain.doFilter(request, response);
     }
     

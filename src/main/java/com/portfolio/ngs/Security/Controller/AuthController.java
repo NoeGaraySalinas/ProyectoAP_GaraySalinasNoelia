@@ -12,10 +12,13 @@ import com.portfolio.ngs.Security.Entity.Usuario;
 import com.portfolio.ngs.Security.Enums.RolNombre;
 import com.portfolio.ngs.Security.Service.RolService;
 import com.portfolio.ngs.Security.Service.UsuarioService;
+import com.portfolio.ngs.Security.jwt.JwtEntryPoint;
 import com.portfolio.ngs.Security.jwt.JwtProvider;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +39,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @CrossOrigin(origins =  {"https://portfoliowebap.web.app" , "http://localhost:4200"})
 public class AuthController {
+    private final static Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
@@ -74,6 +79,7 @@ public class AuthController {
     
     @PostMapping("/login")
     public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
+        logger.info("Estoy en el login 1");
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal puestos"), HttpStatus.BAD_REQUEST);
         
@@ -81,13 +87,13 @@ public class AuthController {
         loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
         
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        
+        logger.info("Estoy en el login 2");
         String jwt = jwtProvider.generateToken(authentication);
-        
+        logger.info("Estoy en el login 3");
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         
         JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-        
+        logger.info("Estoy en el login 4");
         return new ResponseEntity(jwtDto, HttpStatus.OK);
     }
     
