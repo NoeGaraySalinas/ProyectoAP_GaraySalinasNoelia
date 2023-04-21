@@ -17,12 +17,15 @@ import com.portfolio.ngs.Security.jwt.JwtProvider;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.Valid;
+import static org.apache.tomcat.jni.User.username;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -78,14 +81,26 @@ public class AuthController {
     }
     
     @PostMapping("/login")
-    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
+    public ResponseEntity<JwtDto> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult) throws Exception{
         logger.info("Estoy en el login 1");
         if(bindingResult.hasErrors())
             return new ResponseEntity(new Mensaje("Campos mal puestos"), HttpStatus.BAD_REQUEST);
         logger.info("USUARIO: " + loginUsuario.getNombreUsuario());
         logger.info("PASS: " + loginUsuario.getPassword());
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+        
+       Authentication authentication = null;
+    try {
+    authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
         loginUsuario.getNombreUsuario(), loginUsuario.getPassword()));
+	} catch (DisabledException e) {
+			logger.info("catch1");
+     throw new Exception("USER_DISABLED", e);
+		} catch (BadCredentialsException e) {
+			logger.info("catch2");
+     throw new Exception("INVALID_CREDENTIALS", e);
+		}
+       
+        
         logger.info("Estoy en el login 2");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         logger.info("Estoy en el login 3");
@@ -97,5 +112,6 @@ public class AuthController {
         logger.info("Estoy en el login 5");
         return new ResponseEntity(jwtDto, HttpStatus.OK);
     }
+    
     
 }
