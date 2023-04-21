@@ -8,16 +8,22 @@ import com.portfolio.ngs.Security.Entity.Usuario;
 import com.portfolio.ngs.Security.Repository.iUsuarioRepository;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class UsuarioService {
+        private final static Logger logger = LoggerFactory.getLogger(UserDetailsImpl.class);
+
     @Autowired
     iUsuarioRepository iusuarioRepository;
     
     public Optional<Usuario> getByNombreUsuario(String nombreUsuario){
+        logger.info("buscando usuario");
+
         return iusuarioRepository.findByNombreUsuario(nombreUsuario);
     }
     
